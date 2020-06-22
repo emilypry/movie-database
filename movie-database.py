@@ -35,13 +35,24 @@ def connect_to_database(host_name, username, password, database_name):
     return connection
 
 
-mysql_connection = connect('localhost', 'root', 'Scoopy23$')
-cursor = create_database(mysql_connection, 'Movies')
-
-db_connection = connect_to_database('localhost', 'root', 'Scoopy23$', 'Movies')
 
 
-def Main():
-    
+
+
+def main():
+    # These two lines must only be done once.
+    '''
+    mysql_connection = connect('localhost', 'root', 'Scoopy23$')
+    cursor = create_database(mysql_connection, 'Movies')
+    '''
+
+    connection = connect_to_database('localhost', 'root', 'Scoopy23$', 'Movies')
+
+
+
+
+
+if __name__ == '__main__' :
+    main()
 
 
