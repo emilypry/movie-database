@@ -49,7 +49,8 @@ def create_movie_table(cursor):
     except Error as e:
         print('The error "%s" occurred.' % e)
 
-
+def add_movie(connection, the_name, the_year, the_country, the_primary_feel, the_secondary_feel):
+    pass
 
 
 
@@ -61,10 +62,9 @@ def main():
     #create_database(mysql_connection, 'Movies')
 
     connection = connect_to_database('localhost', 'root', 'Scoopy23$', 'Movies')
-    cursor = connection.cursor()
 
     # This line only needs to run once.
-    #create_movie_table(cursor)
+    #create_movie_table(connection.cursor())
 
     while True:
         try:
@@ -76,12 +76,51 @@ def main():
         except:
             print('Please pick between 1-4.')
         
-    
     print(task)
 
     if task == 1:
         # Add a movie. 
-        pass
+        print('ADD A MOVIE')
+        n = input('Name: ')
+        y = input('Year: ')
+        c = input('Country: ')
+
+        feel = {1:'Heart-warming', 2:'Scary', 3:'Depressing', 4:'Meditative', 5:'Fun', 6:'Intense', 7:'Complicated', 8:'Wonderful', 9:'Funny', 10:'Light-hearted', 11:'Disturbing', 12:'Thoughtful', 13:'Other'}
+
+        print('Primary feel:')
+        for num, word in feel.items():
+            print('%d. %s' % (num, word))
+
+        '''
+        while True: 
+            try:
+                print('Primary feel:')
+                for f in feel:
+                    print('%d. %s' % (f.key(), f.value()))
+                p = int(input())
+                #assert p >= 1 and p <= 13
+                #break
+            
+            except ValueError:
+                print('Please enter a number.')
+            except:
+                print('Please pick between 1-13.')
+        '''
+            
+
+        
+        
+
+
+
+        '''
+        p = int(input('Primary feel \n 1. Heart-warming \n 2. Scary \n 3. Depressing \n 4. Meditative \n 5. Intense \n 6. Complicated \n 7. Wonderful \n 8. Fun \n 9. Funny \n 10. Light-hearted \n 11. Disturbing \n 12. Thoughtful \n 13. Other'))
+       
+        '''
+
+
+
+        
     elif task == 2:
         # Search movies. 
         pass
@@ -94,14 +133,7 @@ def main():
     
 
 
-    '''
-    what to do on each iteration?
-    -add new movie
-    -search for set of movies
-    -update movie info
-    -delete a movie
 
-    '''
 
 
 
