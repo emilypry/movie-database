@@ -65,13 +65,41 @@ def main():
 
     # This line only needs to run once.
     #create_movie_table(cursor)
+
+    while True:
+        try:
+            task = int(input('What would you like to do? \n 1. Add a movie \n 2. Search movies \n 3. Update a movie \n 4. Delete a movie \n'))
+            assert task >= 1 and task <= 4
+            break
+        except ValueError:
+            print('Please enter a number.')
+        except:
+            print('Please pick between 1-4.')
+        
     
+    print(task)
+
+    if task == 1:
+        # Add a movie. 
+        pass
+    elif task == 2:
+        # Search movies. 
+        pass
+    elif task == 3:
+        # Update a movie.
+        pass
+    else:
+        # Delete a movie. 
+        pass
+    
+
+
     '''
     what to do on each iteration?
     -add new movie
     -search for set of movies
     -update movie info
-
+    -delete a movie
 
     '''
 
