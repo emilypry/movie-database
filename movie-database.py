@@ -64,6 +64,7 @@ def add_movie(connection, the_name, the_year, the_country, the_primary_feel, the
     except Error as e:
         print('The error "%s" occurred.' % e)
 
+'''
 def search(connection, the_parameter, the_value):
     try:  
         cursor = connection.cursor()
@@ -75,7 +76,37 @@ def search(connection, the_parameter, the_value):
         print('Something went wrong with the search.')
 
     return cursor.fetchall()
+'''
 
+def search(connection, parameters_and_values):
+    """Takes a connection and a dictionary of parameters and associated values to search a table for. 
+    """
+    cursor = connection.cursor()
+
+    query = 'SELECT * FROM my_movies WHERE '
+
+    for p, v in parameters_and_values.items():
+        query += '%s = "%s" AND ' % (p, v)
+
+        print(query)
+    
+    query = query[:-4]
+    print('final query: ', query)
+
+    cursor.execute(query)
+
+    return cursor.fetchall()
+
+
+
+
+
+
+
+
+
+
+# TODO: a display() function to print the table nicely, no matter how many rows. 
 
 
 def main():
@@ -155,37 +186,53 @@ def main():
         # then can add another parameter, showing fewer
         # or, can reset all parameters and start fresh (maybe go back one step???)
 
-        while True:
-            try:
-                option = int(input('How would you like to search for movies? \n 1. By name \n 2. By year \n 3. By country \n 4. By primary feel \n 5. By secondary feel \n'))
-                assert option >= 1 and option <= 5
-                break
-            except ValueError:
-                print('Please enter a number.')
-            except:
-                print('Please pick between 1-5.')
+        parameters = {1:'By name', 2:'By year', 3:'By country', 4:'By primary feel', 5:'By secondary feel'}
 
-        if option == 1:
-            # Search by name.
-            n = input('Name to search for: ')
+        another_par = True
+        pars_and_vars = {}  # The dictionary of all parameters and values used in the search. 
 
-            print(search(connection, 'name', n))
+        while another_par == True:
+            # Will print a subsection of the table depending on the new par/val (added to the old). Can then choose whether or not to add another par/val. 
+            while True:
+                try:
+                    print('How would you like to search for movies?')
+                    for num, p in parameters.items():
+                        print('%d. %s' % (num, p))
+                    option = int(input())
+                    assert option >= 1 and option <= 5
+                    break
+                except ValueError:
+                    print('Please enter a number.')
+                except:
+                    print('Please pick between 1-5.')
+
+            
+            if option == 1:
+                # Search by name.
+
+                if 'name' in pars_and_vars:
+                    print('You have already filtered by name.')
+                    continue
+                else:
+                    n = input('Name to search for: ')
+                    pars_and_vars['name'] = n
 
 
+                    print(search(connection, pars_and_vars))
 
-        elif option == 2:
-            # Search by year.
-            pass
-        elif option == 3:
-            # Search by country.
-            pass
-        elif option == 4:
-            # Search by primary feel.
-            pass
-        else:
-            # Search by secondary feel. 
-            pass
-
+            elif option == 2:
+                # Search by year.
+                pass
+            elif option == 3:
+                # Search by country.
+                pass
+            elif option == 4:
+                # Search by primary feel.
+                pass
+            else:
+                # Search by secondary feel. 
+                pass
+            
 
         
     elif task == 3:
