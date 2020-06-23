@@ -81,8 +81,11 @@ def main():
     if task == 1:
         # Add a movie. 
         print('ADD A MOVIE')
+
+        # Get name.
         n = input('Name: ')
 
+        # Get year.
         while True:
             try:
                 y = int(input('Year: '))
@@ -90,17 +93,19 @@ def main():
             except ValueError:
                 print('Please enter a year.')
 
+        # Get country.
         c = input('Country: ')
 
-
+        # Get primary_feel and secondary_feel. 
         feel_choices = {1:'Heart-warming', 2:'Scary', 3:'Depressing', 4:'Meditative', 5:'Fun', 6:'Intense', 7:'Complicated', 8:'Wonderful', 9:'Funny', 10:'Light-hearted', 11:'Disturbing', 12:'Thoughtful', 13:'Other'}
 
         feel = []
+        feel_num = ['primary', 'secondary']
 
         for i in range(0, 2): 
             while True:
                 try:
-                    print('Primary feel:')
+                    print('%s feel:' % feel_num[i].capitalize())
                     for num, word in feel_choices.items():
                         print('%d. %s' % (num, word))
                     f = int(input())
@@ -112,17 +117,13 @@ def main():
                     print('Please pick between 1-13.')
             
             if f == 13:
-                feel.append(input('Describe, in one word, the primary feel: '))
+                feel.append(input('Describe, in one word, the %s feel: ' % feel_num[i]))
             else:
                 feel.append(feel_choices.get(f))
 
-
         p, s = feel[0], feel[1]
 
-
-
-        print('primary: ', p, '\nsecondary: ', s)
-            
+        print(p, s)
 
         
         
