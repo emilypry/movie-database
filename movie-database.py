@@ -186,7 +186,7 @@ def main():
         # then can add another parameter, showing fewer
         # or, can reset all parameters and start fresh (maybe go back one step???)
 
-        parameters = {1:'By name', 2:'By year', 3:'By country', 4:'By primary feel', 5:'By secondary feel'}
+        parameters = {1:'name', 2:'year', 3:'country', 4:'primary_feel', 5:'secondary_feel'}
 
         another_par = 1
         pars_and_vars = {}  # The dictionary of all parameters and values used in the search. 
@@ -197,7 +197,12 @@ def main():
                 try:
                     print('How would you like to search for movies?')
                     for num, p in parameters.items():
-                        print('%d. %s' % (num, p))
+                        # If the parameter is alreay used, make it bold.
+                        if p in pars_and_vars:
+                            print('\033[1m%d. By %s\033[0m' % (num, p))
+                        else:
+                            print('%d. By %s' % (num, p))
+
                     option = int(input())
                     assert option >= 1 and option <= 5
                     break
