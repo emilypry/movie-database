@@ -188,10 +188,10 @@ def main():
 
         parameters = {1:'By name', 2:'By year', 3:'By country', 4:'By primary feel', 5:'By secondary feel'}
 
-        another_par = True
+        another_par = 1
         pars_and_vars = {}  # The dictionary of all parameters and values used in the search. 
 
-        while another_par == True:
+        while another_par == 1:
             # Will print a subsection of the table depending on the new par/val (added to the old). Can then choose whether or not to add another par/val. 
             while True:
                 try:
@@ -205,19 +205,15 @@ def main():
                     print('Please enter a number.')
                 except:
                     print('Please pick between 1-5.')
-
             
             if option == 1:
                 # Search by name.
-
                 if 'name' in pars_and_vars:
                     print('You have already filtered by name.')
                     continue
                 else:
                     n = input('Name to search for: ')
                     pars_and_vars['name'] = n
-
-
                     print(search(connection, pars_and_vars))
 
             elif option == 2:
@@ -232,7 +228,19 @@ def main():
             else:
                 # Search by secondary feel. 
                 pass
+
+            # Check if user wants to filter by even further parameters. 
+            while True:
+                try:
+                    another_par = int(input('Want to filer these movies further? \n 1. Yes \n 2. No \n'))
+                    assert another_par >= 1 and another_par <= 2
+                    break
+                except ValueError:
+                    print('Please enter a number.')
+                except:
+                    print('Please pick between 1-2.')
             
+
 
         
     elif task == 3:
