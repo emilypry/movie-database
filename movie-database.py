@@ -50,7 +50,19 @@ def create_movie_table(cursor):
         print('The error "%s" occurred.' % e)
 
 def add_movie(connection, the_name, the_year, the_country, the_primary_feel, the_secondary_feel):
-    pass
+    try:
+        cursor = connection.cursor()
+
+        query = 'INSERT INTO my_movies (name, year, country, primary_feel, secondary_feel) VALUES (%s, %s, %s, %s, %s)'
+        values = (the_name, the_year, the_country, the_primary_feel, the_secondary_feel)
+        cursor.execute(query, values)
+
+        connection.commit()
+
+        print('Successfully added %s to my_movies.' % the_name)
+    
+    except Error as e:
+        print('The error "%s" occurred.' % e)
 
 
 
@@ -123,18 +135,8 @@ def main():
 
         p, s = feel[0], feel[1]
 
-        print(p, s)
-
-        
-        
-
-
-
-        '''
-        p = int(input('Primary feel \n 1. Heart-warming \n 2. Scary \n 3. Depressing \n 4. Meditative \n 5. Intense \n 6. Complicated \n 7. Wonderful \n 8. Fun \n 9. Funny \n 10. Light-hearted \n 11. Disturbing \n 12. Thoughtful \n 13. Other'))
-       
-        '''
-
+        # Add the movie to my_movies.
+        add_movie(connection, n, y, c, p, s)
 
 
         
