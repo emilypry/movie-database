@@ -64,7 +64,17 @@ def add_movie(connection, the_name, the_year, the_country, the_primary_feel, the
     except Error as e:
         print('The error "%s" occurred.' % e)
 
+def search(connection, the_parameter, the_value):
+    try:  
+        cursor = connection.cursor()
 
+        query = 'SELECT * FROM my_movies WHERE %s = %s'
+        values = (the_parameter, the_value)
+        cursor.execute(query, values)
+    except:
+        print('Something went wrong with the search.')
+
+    return cursor.fetchall()
 
 
 
@@ -153,7 +163,21 @@ def main():
             except:
                 print('Please pick between 1-5.')
 
-
+        if option == 1:
+            # Search by name.
+            pass
+        elif option == 2:
+            # Search by year.
+            pass
+        elif option == 3:
+            # Search by country.
+            pass
+        elif option == 4:
+            # Search by primary feel.
+            pass
+        else:
+            # Search by secondary feel. 
+            pass
 
 
         
