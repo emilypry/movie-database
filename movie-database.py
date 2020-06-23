@@ -82,30 +82,46 @@ def main():
         # Add a movie. 
         print('ADD A MOVIE')
         n = input('Name: ')
-        y = input('Year: ')
+
+        while True:
+            try:
+                y = int(input('Year: '))
+                break
+            except ValueError:
+                print('Please enter a year.')
+
         c = input('Country: ')
 
-        feel = {1:'Heart-warming', 2:'Scary', 3:'Depressing', 4:'Meditative', 5:'Fun', 6:'Intense', 7:'Complicated', 8:'Wonderful', 9:'Funny', 10:'Light-hearted', 11:'Disturbing', 12:'Thoughtful', 13:'Other'}
 
-        print('Primary feel:')
-        for num, word in feel.items():
-            print('%d. %s' % (num, word))
+        feel_choices = {1:'Heart-warming', 2:'Scary', 3:'Depressing', 4:'Meditative', 5:'Fun', 6:'Intense', 7:'Complicated', 8:'Wonderful', 9:'Funny', 10:'Light-hearted', 11:'Disturbing', 12:'Thoughtful', 13:'Other'}
 
-        '''
-        while True: 
-            try:
-                print('Primary feel:')
-                for f in feel:
-                    print('%d. %s' % (f.key(), f.value()))
-                p = int(input())
-                #assert p >= 1 and p <= 13
-                #break
+        feel = []
+
+        for i in range(0, 2): 
+            while True:
+                try:
+                    print('Primary feel:')
+                    for num, word in feel_choices.items():
+                        print('%d. %s' % (num, word))
+                    f = int(input())
+                    assert f >= 1 and f <= 13
+                    break
+                except ValueError:
+                    print('Please enter a number.')
+                except:
+                    print('Please pick between 1-13.')
             
-            except ValueError:
-                print('Please enter a number.')
-            except:
-                print('Please pick between 1-13.')
-        '''
+            if f == 13:
+                feel.append(input('Describe, in one word, the primary feel: '))
+            else:
+                feel.append(feel_choices.get(f))
+
+
+        p, s = feel[0], feel[1]
+
+
+
+        print('primary: ', p, '\nsecondary: ', s)
             
 
         
