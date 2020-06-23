@@ -211,28 +211,24 @@ def main():
                 except:
                     print('Please pick between 1-5.')
             
-            if option == 1:
-                # Search by name.
-                if 'name' in pars_and_vars:
-                    print('You have already filtered by name.')
-                    continue
-                else:
-                    n = input('Name to search for: ')
-                    pars_and_vars['name'] = n
-                    print(search(connection, pars_and_vars))
-
-            elif option == 2:
-                # Search by year.
-                pass
-            elif option == 3:
-                # Search by country.
-                pass
-            elif option == 4:
-                # Search by primary feel.
-                pass
+            # If that parameter has already been used, ask for a different one. 
+            if parameters[option] in pars_and_vars:
+                print('You have already filtered by %s. Please choose a different parameter.' % parameters[option])
+                continue
             else:
-                # Search by secondary feel. 
-                pass
+                p = input('%s to search for: ' % parameters[option].capitalize())
+                if parameters[option] == 'year':
+                    p = int(p)
+                pars_and_vars[parameters[option]] = p
+
+                results = search(connection, pars_and_vars)
+                # If there are no movies in the results, end the search entirely.
+                if not results:
+                    print('No movies match those criteria.')
+                    break
+                print(results)
+
+
 
             # Check if user wants to filter by even further parameters. 
             while True:
