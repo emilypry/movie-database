@@ -68,9 +68,9 @@ def search(connection, the_parameter, the_value):
     try:  
         cursor = connection.cursor()
 
-        query = 'SELECT * FROM my_movies WHERE %s = %s'
+        query = 'SELECT * FROM my_movies WHERE %s = "%s"'
         values = (the_parameter, the_value)
-        cursor.execute(query, values)
+        cursor.execute(query % values)
     except:
         print('Something went wrong with the search.')
 
@@ -104,6 +104,8 @@ def main():
 
         # Get name.
         n = input('Name: ')
+        # TODO: See if the name is already in the database. If so, say it's already there and start over. 
+
 
         # Get year.
         while True:
@@ -165,7 +167,12 @@ def main():
 
         if option == 1:
             # Search by name.
-            pass
+            n = input('Name to search for: ')
+
+            print(search(connection, 'name', n))
+
+
+
         elif option == 2:
             # Search by year.
             pass
