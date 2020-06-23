@@ -80,16 +80,14 @@ def main():
 
     while True:
         try:
-            task = int(input('What would you like to do? \n 1. Add a movie \n 2. Search movies \n 3. Update a movie \n 4. Delete a movie \n'))
-            assert task >= 1 and task <= 4
+            task = int(input('What would you like to do? \n 1. Add a movie \n 2. Search movies \n 3. Update a movie \n 4. Delete a movie \n 5. See all movies \n'))
+            assert task >= 1 and task <= 5
             break
         except ValueError:
             print('Please enter a number.')
         except:
-            print('Please pick between 1-4.')
+            print('Please pick between 1-5.')
         
-    print(task)
-
     if task == 1:
         # Add a movie. 
         print('ADD A MOVIE')
@@ -138,16 +136,35 @@ def main():
         # Add the movie to my_movies.
         add_movie(connection, n, y, c, p, s)
 
-
-        
     elif task == 2:
         # Search movies. 
-        pass
+
+        # show all movies with a given parameter
+        # then can add another parameter, showing fewer
+        # or, can reset all parameters and start fresh (maybe go back one step???)
+
+        while True:
+            try:
+                option = int(input('How would you like to search for movies? \n 1. By name \n 2. By year \n 3. By country \n 4. By primary feel \n 5. By secondary feel \n'))
+                assert option >= 1 and option <= 5
+                break
+            except ValueError:
+                print('Please enter a number.')
+            except:
+                print('Please pick between 1-5.')
+
+
+
+
+        
     elif task == 3:
         # Update a movie.
         pass
-    else:
+    elif task == 4:
         # Delete a movie. 
+        pass
+    else:
+        # See all movies.
         pass
     
 
