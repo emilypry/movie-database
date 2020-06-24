@@ -85,17 +85,25 @@ def search(connection, parameters_and_values):
 
     for p, v in parameters_and_values.items():
         query += '%s = "%s" AND ' % (p, v)
-
-        print(query)
     
     query = query[:-4]
-    print('final query: ', query)
 
     cursor.execute(query)
 
     return cursor.fetchall()
 
-
+def update(connection, parameter, value, name):
+    """Updates a row of the table (identifed by name) by changing the parameter to the new value.
+    """
+    try:
+        cursor = connection.cursor()
+        query = 'UPDATE my_movies SET %s = "%s" WHERE name = "%s"'
+        values = (parameter, value, name)
+        
+        cursor.execute(query % values)
+        connection.commit()
+    except Error as e:
+        print('The error "%s" occurred.' % e)
 
 
 
@@ -247,7 +255,39 @@ def main():
 
         # Update a movie.   
         while task == 3:
-            pass
+            name = input('Which movie would you like to update? ')
+
+            result = search(connection, {'name':name})
+
+            # If there's no movie with that name, exit this task.
+            if not result:
+                print('That movie is not in the database.')
+                break
+
+            parameters = {1:'name', 2:'year', 3:'country', 4:'primary_feel', 5:'secondary_feel'}
+            while True:
+                try:
+                    print(result)
+                    print('Which parameter would you like to update?')
+                    for num, p in parameters.items():
+                        print(' %s. %s' %(num, p.capitalize()))
+                    change = int(input())
+                    assert change >= 1 and change <= 5
+                    break
+                except ValueError:
+                    print('Please enter a number.')
+                except:
+                    print('Pick a number between 1-5.')
+            
+            value = input('What should %s\'s %s be? ' % (name, parameters[change]))
+
+            update(connection, parameters[change], value, name)
+
+            break
+
+
+            
+            
 
         # Delete a movie.
         while task == 4:
