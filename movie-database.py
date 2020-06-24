@@ -215,6 +215,8 @@ def main():
         
         # Search movies. 
         while task == 2:
+            print('SEARCH MOVIES')
+
             parameters = {1:'name', 2:'year', 3:'country', 4:'primary_feel', 5:'secondary_feel'}
             another_par = 1
             pars_and_vars = {}  # The dictionary of all parameters and values used in the search. 
@@ -275,6 +277,8 @@ def main():
 
         # Update a movie.   
         while task == 3:
+            print('UPDATE A MOVIE')
+
             name = input('Which movie would you like to update? ')
 
             # Get that movie by name.
@@ -311,6 +315,8 @@ def main():
 
         # Delete a movie.
         while task == 4:
+            print('DELETE A MOVIE')
+
             name = input('Which movie would you like to delete? ')
 
             # Get that movie by name.
@@ -338,6 +344,8 @@ def main():
 
         # See all movies. 
         while task == 5:
+            print('SEE ALL MOVIES')
+
             show_all(connection)
             break
         
