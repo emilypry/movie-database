@@ -59,27 +59,25 @@ def add_movie(connection, the_name, the_year, the_country, the_primary_feel, the
 
         connection.commit()
 
-        print('Successfully added %s to my_movies.' % the_name)
+        print('Successfully added %s to the database.' % the_name)
     
     except Error as e:
         print('The error "%s" occurred.' % e)
 
-'''
-def search(connection, the_parameter, the_value):
-    try:  
-        cursor = connection.cursor()
+def good_name(connection, the_name):
+    """Returns True if the name does not already exist in the table.
+    """
+    cursor = connection.cursor()
+    cursor.execute('SELECT * FROM my_movies WHERE name = "%s"' % the_name)
 
-        query = 'SELECT * FROM my_movies WHERE %s = "%s"'
-        values = (the_parameter, the_value)
-        cursor.execute(query % values)
-    except:
-        print('Something went wrong with the search.')
-
-    return cursor.fetchall()
-'''
+    # If there aren't any rows with that name, the name is fine to add.
+    if not cursor.fetchall():
+        return True
+    else:
+        return False
 
 def search(connection, parameters_and_values):
-    """Takes a connection and a dictionary of parameters and associated values to search a table for. 
+    """Takes a connection and a dictionary of parameters and associated values to search a table for. Returns that portion of the table.
     """
     cursor = connection.cursor()
 
@@ -119,141 +117,147 @@ def main():
     # This line only needs to run once.
     #create_movie_table(connection.cursor())
 
+    # Start a new task. 
     while True:
-        try:
-            task = int(input('What would you like to do? \n 1. Add a movie \n 2. Search movies \n 3. Update a movie \n 4. Delete a movie \n 5. See all movies \n'))
-            assert task >= 1 and task <= 5
-            break
-        except ValueError:
-            print('Please enter a number.')
-        except:
-            print('Please pick between 1-5.')
-        
-    if task == 1:
-        # Add a movie. 
-        print('ADD A MOVIE')
-
-        # Get name.
-        n = input('Name: ')
-        # TODO: See if the name is already in the database. If so, say it's already there and start over. 
-
-
-        # Get year.
+        # Make sure the task is chosen properly. 
         while True:
             try:
-                y = int(input('Year: '))
+                task = int(input('What would you like to do? \n 1. Add a movie \n 2. Search movies \n 3. Update a movie \n 4. Delete a movie \n 5. See all movies \n'))
+                assert task >= 1 and task <= 5
                 break
             except ValueError:
-                print('Please enter a year.')
-
-        # Get country.
-        c = input('Country: ')
-
-        # Get primary_feel and secondary_feel. 
-        feel_choices = {1:'Heart-warming', 2:'Scary', 3:'Depressing', 4:'Meditative', 5:'Fun', 6:'Intense', 7:'Complicated', 8:'Wonderful', 9:'Funny', 10:'Light-hearted', 11:'Disturbing', 12:'Thoughtful', 13:'Other'}
-
-        feel = []
-        feel_num = ['primary', 'secondary']
-
-        for i in range(0, 2): 
-            while True:
-                try:
-                    print('%s feel:' % feel_num[i].capitalize())
-                    for num, word in feel_choices.items():
-                        print('%d. %s' % (num, word))
-                    f = int(input())
-                    assert f >= 1 and f <= 13
-                    break
-                except ValueError:
-                    print('Please enter a number.')
-                except:
-                    print('Please pick between 1-13.')
-            
-            if f == 13:
-                feel.append(input('Describe, in one word, the %s feel: ' % feel_num[i]))
-            else:
-                feel.append(feel_choices.get(f))
-
-        p, s = feel[0], feel[1]
-
-        # Add the movie to my_movies.
-        add_movie(connection, n, y, c, p, s)
-
-    elif task == 2:
-        # Search movies. 
-
-        # show all movies with a given parameter
-        # then can add another parameter, showing fewer
-        # or, can reset all parameters and start fresh (maybe go back one step???)
-
-        parameters = {1:'name', 2:'year', 3:'country', 4:'primary_feel', 5:'secondary_feel'}
-
-        another_par = 1
-        pars_and_vars = {}  # The dictionary of all parameters and values used in the search. 
-
-        while another_par == 1:
-            # Will print a subsection of the table depending on the new par/val (added to the old). Can then choose whether or not to add another par/val. 
-            while True:
-                try:
-                    print('How would you like to search for movies?')
-                    for num, p in parameters.items():
-                        # If the parameter is alreay used, make it bold.
-                        if p in pars_and_vars:
-                            print('\033[1m%d. By %s\033[0m' % (num, p))
-                        else:
-                            print('%d. By %s' % (num, p))
-
-                    option = int(input())
-                    assert option >= 1 and option <= 5
-                    break
-                except ValueError:
-                    print('Please enter a number.')
-                except:
-                    print('Please pick between 1-5.')
-            
-            # If that parameter has already been used, ask for a different one. 
-            if parameters[option] in pars_and_vars:
-                print('You have already filtered by %s. Please choose a different parameter.' % parameters[option])
-                continue
-            else:
-                p = input('%s to search for: ' % parameters[option].capitalize())
-                if parameters[option] == 'year':
-                    p = int(p)
-                pars_and_vars[parameters[option]] = p
-
-                results = search(connection, pars_and_vars)
-                # If there are no movies in the results, end the search entirely.
-                if not results:
-                    print('No movies match those criteria.')
-                    break
-                print(results)
-
-
-
-            # Check if user wants to filter by even further parameters. 
-            while True:
-                try:
-                    another_par = int(input('Want to filer these movies further? \n 1. Yes \n 2. No \n'))
-                    assert another_par >= 1 and another_par <= 2
-                    break
-                except ValueError:
-                    print('Please enter a number.')
-                except:
-                    print('Please pick between 1-2.')
-            
-
-
+                print('Please enter a number.')
+            except:
+                print('Please pick between 1-5.')
         
-    elif task == 3:
-        # Update a movie.
-        pass
-    elif task == 4:
-        # Delete a movie. 
-        pass
-    else:
-        # See all movies.
-        pass
-    
+        # Add a movie.    
+        while task == 1:
+            print('ADD A MOVIE')
+
+            # Get name.
+            n = input('Name: ')
+            # If the name is already in the database, then quite the adding of the movie.
+            if good_name(connection, n) == False:
+                print('That movie is already in the database.')
+                break
+
+            # Get year.
+            while True:
+                try:
+                    y = int(input('Year: '))
+                    break
+                except ValueError:
+                    print('Please enter a year.')
+
+            # Get country.
+            c = input('Country: ')
+
+            # Get primary_feel and secondary_feel. 
+            feel_choices = {1:'Heart-warming', 2:'Scary', 3:'Depressing', 4:'Meditative', 5:'Fun', 6:'Intense', 7:'Complicated', 8:'Wonderful', 9:'Funny', 10:'Light-hearted', 11:'Disturbing', 12:'Thoughtful', 13:'Other'}
+
+            feel = []
+            feel_num = ['primary', 'secondary']
+
+            for i in range(0, 2): 
+                while True:
+                    try:
+                        print('%s feel:' % feel_num[i].capitalize())
+                        for num, word in feel_choices.items():
+                            print('%d. %s' % (num, word))
+                        f = int(input())
+                        assert f >= 1 and f <= 13
+                        break
+                    except ValueError:
+                        print('Please enter a number.')
+                    except:
+                        print('Please pick between 1-13.')
+                
+                if f == 13:
+                    feel.append(input('Describe, in one word, the %s feel: ' % feel_num[i]))
+                else:
+                    feel.append(feel_choices.get(f))
+
+            p, s = feel[0], feel[1]
+
+            # Add the movie to my_movies.
+            add_movie(connection, n, y, c, p, s)
+
+            # Start a new task.
+            break
+        
+        while task == 2:
+            # Search movies. 
+
+            # show all movies with a given parameter
+            # then can add another parameter, showing fewer
+            # or, can reset all parameters and start fresh (maybe go back one step???)
+
+            parameters = {1:'name', 2:'year', 3:'country', 4:'primary_feel', 5:'secondary_feel'}
+
+            another_par = 1
+            pars_and_vars = {}  # The dictionary of all parameters and values used in the search. 
+
+            while another_par == 1:
+                # Will print a subsection of the table depending on the new par/val (added to the old). Can then choose whether or not to add another par/val. 
+                while True:
+                    try:
+                        print('How would you like to search for movies?')
+                        for num, p in parameters.items():
+                            # If the parameter is alreay used, make it bold.
+                            if p in pars_and_vars:
+                                print('\033[1m%d. By %s\033[0m' % (num, p))
+                            else:
+                                print('%d. By %s' % (num, p))
+
+                        option = int(input())
+                        assert option >= 1 and option <= 5
+                        break
+                    except ValueError:
+                        print('Please enter a number.')
+                    except:
+                        print('Please pick between 1-5.')
+                
+                # If that parameter has already been used, ask for a different one. 
+                if parameters[option] in pars_and_vars:
+                    print('You have already filtered by %s. Please choose a different parameter.' % parameters[option])
+                    continue
+                else:
+                    p = input('%s to search for: ' % parameters[option].capitalize())
+                    if parameters[option] == 'year':
+                        p = int(p)
+                    pars_and_vars[parameters[option]] = p
+
+                    results = search(connection, pars_and_vars)
+                    # If there are no movies in the results, end the search entirely.
+                    if not results:
+                        print('No movies match those criteria.')
+                        break
+                    print(results)
+
+                # Check if user wants to filter by even further parameters. 
+                while True:
+                    try:
+                        another_par = int(input('Want to filer these movies further? \n 1. Yes \n 2. No \n'))
+                        assert another_par >= 1 and another_par <= 2
+                        break
+                    except ValueError:
+                        print('Please enter a number.')
+                    except:
+                        print('Please pick between 1-2.')
+
+            # Start a new task.
+            break
+            
+        while task == 3:
+            # Update a movie.
+            pass
+        while task == 4:
+            # Delete a movie. 
+            pass
+        while task == 5:
+            # See all movies.
+            pass
+        
 
 
 
