@@ -133,7 +133,6 @@ def display(data):
     """
     try:
         formatted = Texttable()
-
         all_rows = [['ID', 'Name', 'Year', 'Country', 'Primary Feel', 'Secondary Feel']]
 
         for row in data:
@@ -151,13 +150,13 @@ def display(data):
         print('Something went wrong while printing results.')
 
 def main():
-    # These two lines only need to run once.
-    #mysql_connection = connect('localhost', 'root', 'Scoopy23$')
+    # These two lines only need to run once:
+    #mysql_connection = connect('localhost', 'root', '[password]')
     #create_database(mysql_connection, 'Movies')
 
-    connection = connect_to_database('localhost', 'root', 'Scoopy23$', 'Movies')
+    connection = connect_to_database('localhost', 'root', '[password]', 'Movies')
 
-    # This line only needs to run once.
+    # This line only needs to run once:
     #create_movie_table(connection.cursor())
 
     # Start a new task. 
@@ -357,6 +356,7 @@ def main():
             if sure == 1:
                 delete(connection, name)
             
+            # Start a new task.
             break
 
         # See all movies. 
@@ -364,6 +364,8 @@ def main():
             print('SEE ALL MOVIES')
 
             display(get_all(connection))
+
+            # Start a new task.
             break
         
 
