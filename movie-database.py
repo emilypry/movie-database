@@ -105,7 +105,16 @@ def update(connection, parameter, value, name):
     except Error as e:
         print('The error "%s" occurred.' % e)
 
-
+def delete(connection, name):
+    """Deletes a row of the table (identified by name).
+    """
+    try:
+        cursor = connection.cursor()
+        query = 'DELETE FROM my_movies WHERE name = "%s"'
+        
+        cursor.execute(query % name)
+    except Error as e:
+        print('The error "%s" occurred.' % e)
 
 
 
@@ -257,6 +266,7 @@ def main():
         while task == 3:
             name = input('Which movie would you like to update? ')
 
+            # Get that movie by name.
             result = search(connection, {'name':name})
 
             # If there's no movie with that name, exit this task.
@@ -267,6 +277,7 @@ def main():
             parameters = {1:'name', 2:'year', 3:'country', 4:'primary_feel', 5:'secondary_feel'}
             while True:
                 try:
+                    # Print the movie's current info.
                     print(result)
                     print('Which parameter would you like to update?')
                     for num, p in parameters.items():
@@ -281,17 +292,39 @@ def main():
             
             value = input('What should %s\'s %s be? ' % (name, parameters[change]))
 
+            # Update that parameter of the movie with the new value. 
             update(connection, parameters[change], value, name)
 
+            # Start a new task.
             break
-
-
-            
-            
 
         # Delete a movie.
         while task == 4:
-            pass
+            name = input('Which movie would you like to delete? ')
+
+            # Get that movie by name.
+            result = search(connection, {'name':name})
+
+            # If there's no movie with that name, exit this task.
+            if not result:
+                print('That movie is not in the database.')
+                break
+
+            while True:
+                try:
+                    sure = int(input('Are you sure you want to delete %s? \n 1. Yes \n 2. No \n' % name.capitalize()))
+                    assert sure >= 1 and sure <= 2
+                    break      
+                except ValueError:
+                    print('Please enter a number.')  
+                except:
+                    print('Pick a number between 1-2.')   
+            
+            if sure == 1:
+                delete(connection, name)
+            
+            break
+
 
         # See all movies. 
         while task == 5:
