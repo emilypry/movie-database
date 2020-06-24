@@ -1,5 +1,6 @@
 import mysql.connector 
 from mysql.connector import Error 
+from texttable import Texttable
 
 def connect(host_name, username, password):
     """Connects to your MySQL account. 
@@ -37,7 +38,6 @@ def connect_to_database(host_name, username, password, database_name):
         print('The error "%s" occurred.' % e)
 
     return connection
-
 
 def create_movie_table(cursor):
     """Creates a table, my_movies, in MySQL.
@@ -87,7 +87,6 @@ def search(connection, parameters_and_values):
         query += '%s = "%s" AND ' % (p, v)
     
     query = query[:-4]
-
     cursor.execute(query)
 
     return cursor.fetchall()
@@ -117,23 +116,39 @@ def delete(connection, name):
     except Error as e:
         print('The error "%s" occurred.' % e)
 
-def show_all(connection):
-    """Prints the entire table.
+def get_all(connection):
+    """Gets the entire table.
     """
     try:
         cursor = connection.cursor()
         cursor.execute('SELECT * FROM my_movies')
         results = cursor.fetchall()
-        for row in results:
-            print(row)
     except Error as e:
         print('The error "%s" occurred.' % e)
 
+    return results
 
+def display(data):
+    """Prints a (subsection of a) table in a nicely-formatted manner.
+    """
+    try:
+        formatted = Texttable()
 
+        all_rows = [['ID', 'Name', 'Year', 'Country', 'Primary Feel', 'Secondary Feel']]
 
-# TODO: a display() function to print the table nicely, no matter how many rows. 
+        for row in data:
+            this_row = []
+            for p in row:
+                this_row.append(p)
 
+            all_rows.append(this_row)
+
+        formatted.add_rows(all_rows)
+
+        print(formatted.draw())
+
+    except Error as e:
+        print('Something went wrong while printing results.')
 
 def main():
     # These two lines only need to run once.
@@ -247,6 +262,7 @@ def main():
                     print('You have already filtered by %s. Please choose a different parameter.' % parameters[option])
                     continue
                 else:
+                    # Get the value of the parameter the user wants to search for. 
                     p = input('%s to search for: ' % parameters[option].capitalize())
                     if parameters[option] == 'year':
                         p = int(p)
@@ -257,7 +273,7 @@ def main():
                     if not results:
                         print('No movies match those criteria.')
                         break
-                    print(results)
+                    display(results)
 
                 # Check if user wants to filter by even further parameters, if currently have fewer than five parameters. 
                 if len(pars_and_vars) == 5:
@@ -292,8 +308,9 @@ def main():
             parameters = {1:'name', 2:'year', 3:'country', 4:'primary_feel', 5:'secondary_feel'}
             while True:
                 try:
-                    # Print the movie's current info.
-                    print(result)
+                    # Display the movie's current info.
+                    display(result)
+
                     print('Which parameter would you like to update?')
                     for num, p in parameters.items():
                         print(' %s. %s' %(num, p.capitalize()))
@@ -346,15 +363,9 @@ def main():
         while task == 5:
             print('SEE ALL MOVIES')
 
-            show_all(connection)
+            display(get_all(connection))
             break
         
-
-
-
-
-
-
 
 if __name__ == '__main__' :
     main()
