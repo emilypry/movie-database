@@ -185,18 +185,13 @@ def main():
             # Start a new task.
             break
         
+        # Search movies. 
         while task == 2:
-            # Search movies. 
-
-            # show all movies with a given parameter
-            # then can add another parameter, showing fewer
-            # or, can reset all parameters and start fresh (maybe go back one step???)
-
             parameters = {1:'name', 2:'year', 3:'country', 4:'primary_feel', 5:'secondary_feel'}
-
             another_par = 1
             pars_and_vars = {}  # The dictionary of all parameters and values used in the search. 
 
+            # Will iterate as long as user wants to filter by another parameter.
             while another_par == 1:
                 # Will print a subsection of the table depending on the new par/val (added to the old). Can then choose whether or not to add another par/val. 
                 while True:
@@ -234,7 +229,9 @@ def main():
                         break
                     print(results)
 
-                # Check if user wants to filter by even further parameters. 
+                # Check if user wants to filter by even further parameters, if currently have fewer than five parameters. 
+                if len(pars_and_vars) == 5:
+                    break
                 while True:
                     try:
                         another_par = int(input('Want to filer these movies further? \n 1. Yes \n 2. No \n'))
@@ -247,15 +244,17 @@ def main():
 
             # Start a new task.
             break
-            
+
+        # Update a movie.   
         while task == 3:
-            # Update a movie.
             pass
+
+        # Delete a movie.
         while task == 4:
-            # Delete a movie. 
             pass
+
+        # See all movies. 
         while task == 5:
-            # See all movies.
             pass
         
 
