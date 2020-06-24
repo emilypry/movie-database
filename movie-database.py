@@ -113,10 +113,21 @@ def delete(connection, name):
         query = 'DELETE FROM my_movies WHERE name = "%s"'
         
         cursor.execute(query % name)
+        connection.commit()
     except Error as e:
         print('The error "%s" occurred.' % e)
 
-
+def show_all(connection):
+    """Prints the entire table.
+    """
+    try:
+        cursor = connection.cursor()
+        cursor.execute('SELECT * FROM my_movies')
+        results = cursor.fetchall()
+        for row in results:
+            print(row)
+    except Error as e:
+        print('The error "%s" occurred.' % e)
 
 
 
@@ -325,10 +336,10 @@ def main():
             
             break
 
-
         # See all movies. 
         while task == 5:
-            pass
+            show_all(connection)
+            break
         
 
 
