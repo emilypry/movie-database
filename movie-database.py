@@ -42,7 +42,6 @@ def connect_to_database(host_name, username, password, database_name):
 def create_movie_table(cursor):
     """Creates a table, my_movies, in MySQL.
     """
-
     try:
         cursor.execute('CREATE TABLE my_movies (id INT AUTO_INCREMENT PRIMARY KEY, name VARCHAR(255), year INT, country VARCHAR(255), primary_feel VARCHAR(255), secondary_feel VARCHAR(255))')
         print('Table "my_movies" created successfully.')
@@ -80,7 +79,6 @@ def search(connection, parameters_and_values):
     """Takes a connection and a dictionary of parameters and associated values to search a table for. Returns that portion of the table.
     """
     cursor = connection.cursor()
-
     query = 'SELECT * FROM my_movies WHERE '
 
     for p, v in parameters_and_values.items():
@@ -147,14 +145,14 @@ def display(data):
         print(formatted.draw())
 
     except Error as e:
-        print('Something went wrong while printing results.')
+        print('The error "%s" occurred while printing results.' % e)
 
 def main():
     # These two lines only need to run once:
-    #mysql_connection = connect('localhost', 'root', '[password]')
+    #mysql_connection = connect('localhost', 'root', 'Scoopy23$')
     #create_database(mysql_connection, 'Movies')
 
-    connection = connect_to_database('localhost', 'root', '[password]', 'Movies')
+    connection = connect_to_database('localhost', 'root', 'Scoopy23$', 'Movies')
 
     # This line only needs to run once:
     #create_movie_table(connection.cursor())
@@ -170,7 +168,7 @@ def main():
             except ValueError:
                 print('Please enter a number.')
             except:
-                print('Please pick between 1-5.')
+                print('Please pick between 1-5.')            
         
         # Add a movie.    
         while task == 1:
@@ -178,7 +176,7 @@ def main():
 
             # Get name.
             n = input('Name: ')
-            # If the name is already in the database, then quite the adding of the movie.
+            # If the name is already in the database, then quit the adding of the movie.
             if good_name(connection, n) == False:
                 print('That movie is already in the database.')
                 break
@@ -237,17 +235,16 @@ def main():
 
             # Will iterate as long as user wants to filter by another parameter.
             while another_par == 1:
-                # Will print a subsection of the table depending on the new par/val (added to the old). Can then choose whether or not to add another par/val. 
+                # Will print a subsection of the table depending on the new par/val (added to the old). Can then choose whether or not to add yet another par/val. 
                 while True:
                     try:
                         print('How would you like to search for movies?')
                         for num, p in parameters.items():
-                            # If the parameter is alreay used, make it bold.
+                            # If the parameter is already used, make it bold.
                             if p in pars_and_vars:
                                 print('\033[1m%d. By %s\033[0m' % (num, p))
                             else:
                                 print('%d. By %s' % (num, p))
-
                         option = int(input())
                         assert option >= 1 and option <= 5
                         break
@@ -366,8 +363,7 @@ def main():
             display(get_all(connection))
 
             # Start a new task.
-            break
-        
+            break    
 
 if __name__ == '__main__' :
     main()

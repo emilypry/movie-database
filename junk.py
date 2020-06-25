@@ -1,9 +1,39 @@
 
-'''
-if 0==0:
-    a = input('What is your name? ')
-    print('Welcome, %s.' % a)
-'''
+
+
+
+
+
+
+movies = {}
+
+while True:
+    task = int(input('What would you like to do? \n 1. Enter a new movie \n 2. See all movies \n'))
+
+    while task == 1:
+        name = input('Name of movie: ')
+        if name in movies.keys():
+            print('%s has already been entered. Please enter a new movie.' % name) 
+            continue
+
+        year = input('Year of movie: ')
+        while year.isdigit() == False:
+            print('Please enter the year.')
+            year = input('Year of movie: ')
+
+
+        movies[name] = year
+        break
+
+    while task == 2:
+        if not movies:
+            print('No movies.')
+        else:
+            print('Movies:')
+            for m in movies:
+                print(m)
+        break
+
 
 
 
@@ -11,8 +41,9 @@ if 0==0:
 #   if needs condition (even if trivial), and will only go once
 #   for needs particular number of items to loop through
 
-# can terminate without having to meet a condition
+# can terminate, or start new iteration, without having to meet a condition
 #   can't break from if
+#   can with for, if know how many items to iterate through
 
 '''
 again = 'yes'
