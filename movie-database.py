@@ -149,10 +149,10 @@ def display(data):
 
 def main():
     # These two lines only need to run once:
-    #mysql_connection = connect('localhost', 'root', 'Scoopy23$')
+    #mysql_connection = connect('localhost', 'root', '[password]')
     #create_database(mysql_connection, 'Movies')
 
-    connection = connect_to_database('localhost', 'root', 'Scoopy23$', 'Movies')
+    connection = connect_to_database('localhost', 'root', '[password]', 'Movies')
 
     # This line only needs to run once:
     #create_movie_table(connection.cursor())
